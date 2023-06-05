@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moroccan Friend Arrival Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+<canvas id="canvas"></canvas>
+
+<h1 class="text-center text-4xl font-bold p-5">Moroccan Friend Arrival Predictor</h1>
+
+<main class="container mx-auto p-5">
+    <div class="clock mx-auto">
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+    </div>
+    <section class="introduction">
+        <article class="situations">
+            <h1 class="text-2xl font-bold mb-5">Tijd situaties</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <article class="five-minutes-prediction bg-white p-5 rounded shadow">
+                    <h2 class="text-xl font-bold mb-3">Ben er met 5 minuten</h2>
+                    <p class="mb-3">Vaak word hier mee bedoelt dat iemand er met 5 minutes is</p>
+                    <button onclick="predictFiveMinutes()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                </article>
+                <article class="brb-prediction bg-white p-5 rounded shadow">
+                    <h2 class="text-xl font-bold mb-3">BRB</h2>
+                    <p class="mb-3">Vaak word hier mee bedoelt dat iemand er zometeen weer is.</p>
+                    <button onclick="showModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                </article>
+                <article class="drink-prediction bg-white p-5 rounded shadow">
+                    <h2 class="text-xl font-bold mb-3">Ik pak heel even wat te drinken</h2>
+                    <p class="mb-3">Vaak word hier mee bedoelt dat iemand even wat te drinken pakt.</p>
+                    <button onclick="playAudio()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                </article>
+            </div>
+        </article>
+    </section>
+
+    <section>
+        <article class="pt-10">
+            <p>I'll be there in 5 minutes</p>
+            <button onclick="calculateRealTime()">Calculate Real Time</button>
+            <p id="real_time_prediction"></p>
+        </article>
+    </section>
+
+    <section class="functionalities mt-10">
+        <p class="mb-3">At what time did your friend say they would come?</p>
+        <div class="mb-5">
+            <label for="friend_time" class="sr-only">Friend's Time</label>
+            <input id="friend_time" type="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        </div>
+        <button onclick="predictArrival()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Predict Arrival</button>
+
+        <p id="prediction"></p>
+
+
+
+    </section>
+</main>
+</body>
+</html>
