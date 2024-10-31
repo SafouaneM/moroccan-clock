@@ -25,7 +25,7 @@ function calculateRealTime() {
     // create confetti effect
     confetti({
         particleCount: 200,
-        spread: 200
+        spread: 500
     });
 }
 
@@ -46,7 +46,6 @@ function predictFiveMinutes() {
 };
 
 function showModal() {
-    // Replace 'imageSrc' with the actual source of your image
     let imageSrc = 'https://pbs.twimg.com/media/FnP7ZKQXkAEsI3n.jpg';
     let modal = document.createElement('div');
     modal.style.position = "fixed";
@@ -67,7 +66,6 @@ function showModal() {
 };
 
 function playAudio() {
-    // Replace 'audioSrc' with the actual source of your audio file
     let audioSrc = 'hoh.mp3';
     let audio = new Audio(audioSrc);
     audio.play();
@@ -78,7 +76,7 @@ const minuteHand = document.querySelector('.minute-hand');
 const secondHand = document.querySelector('.second-hand');
 
 function setDate() {
-    const now = new Date();
+    const now = new Date().getTimezoneOffset();
 
     const seconds = now.getSeconds();
     const secondsDegrees = ((seconds / 60) * 360) + 90;
@@ -96,4 +94,3 @@ function setDate() {
 setInterval(setDate, 1000);
 
 setDate();
-
