@@ -55,6 +55,10 @@ function predictArrival() {
     const predictedMinutes = String(friendTime.getMinutes()).padStart(2, "0");
 
     predictionOutput.textContent = `He will come around ${predictedHours}:${predictedMinutes} (Moroccan Standard Time™)`;
+
+    let racistAudio = 'racist.mp3';
+    let audioRacist = new Audio(racistAudio);
+    audioRacist.play();
 }
 
 function calculateRealTime() {
