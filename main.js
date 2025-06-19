@@ -1,49 +1,148 @@
+const loaderQuotes = [
+    "Loading time arrival predidctor...",
+    "Downloading: Baita zit zaytun...",
+    "Optimizing fake argan oil particles...",
+    "Loading excuses I mean predictions...",
+];
+
+window.addEventListener("DOMContentLoaded", () => {
+    const bar = document.getElementById("loader-bar");
+    const btn = document.getElementById("enter-btn");
+    const quote = document.getElementById("loader-quote");
+    const loader = document.getElementById("fake-loader");
+
+    quote.textContent = `"${loaderQuotes[Math.floor(Math.random() * loaderQuotes.length)]}"`;
+
+    setTimeout(() => {
+        bar.style.width = "100%";
+    }, 100);
+
+    setTimeout(() => {
+        btn.classList.remove("hidden");
+    }, 3000);
+
+    btn.addEventListener("click", () => {
+        const clickSound = new Audio("minecraft-click.mp3");
+        clickSound.play();
+
+        const anthem = new Audio("morocco-anthem.mp3");
+        anthem.loop = true;
+        anthem.play();
+
+        loader.classList.add("fade-out");
+
+        setTimeout(() => {
+            loader.remove();
+        }, 800);
+    });
+});
+
 function predictArrival() {
     const friendTimeInput = document.getElementById("friend_time");
     const predictionOutput = document.getElementById("prediction");
 
-    if (friendTimeInput.value === "") {
-        predictionOutput.innerHTML = "Please enter a time.";
-    } else {
-        let friendTime = new Date(`1970-01-01T${friendTimeInput.value}:00`);
-        friendTime.setMinutes(friendTime.getMinutes() + 60);
-
-        let hours = friendTime.getHours();
-        let minutes = friendTime.getMinutes();
-
-        hours = (hours < 10) ? '0' + hours : hours;
-        minutes = (minutes < 10) ? '0' + minutes : minutes;
-
-        predictionOutput.innerHTML = "He will come around " + hours + ":" + minutes;
+    if (!friendTimeInput.value) {
+        predictionOutput.textContent = "⛔️ Please enter a time first.";
+        return;
     }
+
+    const [hours, minutes] = friendTimeInput.value.split(":").map(Number);
+    const friendTime = new Date();
+    friendTime.setHours(hours);
+    friendTime.setMinutes(minutes + 60);
+
+    const predictedHours = String(friendTime.getHours()).padStart(2, "0");
+    const predictedMinutes = String(friendTime.getMinutes()).padStart(2, "0");
+
+    predictionOutput.textContent = `He will come around ${predictedHours}:${predictedMinutes} (Moroccan Standard Time™)`;
 }
 
 function calculateRealTime() {
     const realTimePredictionOutput = document.getElementById("real_time_prediction");
     realTimePredictionOutput.innerHTML = "He's going to be there in around 30 minutes including a bathroom break";
 
-    // create confetti effect
     confetti({
-        particleCount: 200,
-        spread: 500
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
     });
 }
 
+const allPhrases = [
+    "Bomba",
+    "Ik echte water halen ja",
+    "Even eten halen zegt hij",
+    "Koelvloeistof werkt niet",
+    "Ik kom zo",
+    "Synoniem voor zometeen",
+    "Griekenland",
+    "Baita",
+    "Cristiano el bichooo ronaldooo"
+];
+
+let remainingPhrases = [...allPhrases];
+
 function predictFiveMinutes() {
-    let now = new Date();
-    let min = 15;
-    let max = 45;
-    let extraMinutes = Math.floor(Math.random() * (max - min + 1)) + min;
+    const now = new Date();
+    const min = 15;
+    const max = 45;
+    const extraMinutes = Math.floor(Math.random() * (max - min + 1)) + min;
     now.setMinutes(now.getMinutes() + extraMinutes);
 
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
 
-    hours = (hours < 10) ? '0' + hours : hours;
-    minutes = (minutes < 10) ? '0' + minutes : minutes;
+    if (remainingPhrases.length === 0) {
+        remainingPhrases = [...allPhrases];
+    }
 
-    alert("He will come around " + hours + ":" + minutes);
-};
+    const index = Math.floor(Math.random() * remainingPhrases.length);
+    const phrase = remainingPhrases[index];
+
+    remainingPhrases.splice(index, 1);
+
+    showFloatingMessage(`Hij komt rond ${hours}:${minutes} – ${phrase}`);
+}
+
+
+let toastTimeout;
+let activeAudio;
+
+function showFloatingMessage(message) {
+    const toast = document.getElementById("floating-toast");
+
+    if (activeAudio) {
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+    }
+
+    activeAudio = new Audio("woo.mp3");
+    activeAudio.play();
+
+    if (toastTimeout) {
+        clearTimeout(toastTimeout);
+    }
+
+    toast.textContent = message;
+    toast.classList.remove("hidden", "opacity-0");
+
+    void toast.offsetWidth;
+
+    toast.classList.add("opacity-100");
+
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove("opacity-100");
+        toast.classList.add("opacity-0");
+
+        setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 300);
+
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+    }, 3000);
+}
+
 
 function showModal() {
     let imageSrc = 'https://pbs.twimg.com/media/FnP7ZKQXkAEsI3n.jpg';
@@ -62,14 +161,14 @@ function showModal() {
 
     modal.onclick = function() {
         modal.remove();
-    };
-};
+    }
+}
 
 function playAudio() {
     let audioSrc = 'hoh.mp3';
     let audio = new Audio(audioSrc);
     audio.play();
-};
+}
 
 const hourHand = document.querySelector('.hour-hand');
 const minuteHand = document.querySelector('.minute-hand');

@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moroccan Friend Arrival Predictor</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="main.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-100">
 <canvas id="canvas"></canvas>
 
 <h1 class="text-center text-4xl font-bold p-5">Moroccan Friend Arrival Predictor</h1>
+<div id="fake-loader" class="fixed inset-0 bg-[url('/minecraft-bg.jpg')] bg-repeat z-50 flex flex-col items-center justify-center text-white font-mono text-center">
+    <p class="text-lg mb-2">Generating world...</p>
+    <p class="text-sm mb-4" id="loader-quote">"Waiting for your Moroccan friend to come online..."</p>
+    <div class="w-64 h-3 bg-gray-800 rounded overflow-hidden mb-4">
+        <div id="loader-bar" class="h-full bg-green-500 w-0 transition-all duration-3000 ease-linear"></div>
+    </div>
+    <button id="enter-btn" class="hidden mt-4 bg-green-600 hover:bg-green-700 px-5 py-2 rounded text-sm font-bold">Enter the Predictor</button>
+</div>
 
 <main class="container mx-auto p-5">
     <div class="clock mx-auto">
@@ -27,43 +35,58 @@
                 <article class="five-minutes-prediction bg-white p-5 rounded shadow">
                     <h2 class="text-xl font-bold mb-3">Ben er met 5 minuten</h2>
                     <p class="mb-3">Vaak word hier mee bedoelt dat iemand er met 5 minutes is</p>
-                    <button onclick="predictFiveMinutes()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                    <button onclick="predictFiveMinutes()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md border border-green-600">Bereken tijd</button>
                 </article>
                 <article class="brb-prediction bg-white p-5 rounded shadow">
                     <h2 class="text-xl font-bold mb-3">BRB</h2>
                     <p class="mb-3">Vaak word hier mee bedoelt dat iemand er zometeen weer is.</p>
-                    <button onclick="showModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                    <button onclick="showModal()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md border border-green-600">Bereken tijd</button>
                 </article>
                 <article class="drink-prediction bg-white p-5 rounded shadow">
                     <h2 class="text-xl font-bold mb-3">Ik pak heel even wat te drinken</h2>
                     <p class="mb-3">Vaak word hier mee bedoelt dat iemand even wat te drinken pakt.</p>
-                    <button onclick="playAudio()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Bereken tijd</button>
+                    <button onclick="playAudio()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md border border-green-600">Bereken tijd</button>
                 </article>
             </div>
         </article>
     </section>
 
-    <section>
-        <article class="pt-10">
-            <p>I'll be there in 5 minutes</p>
-            <button onclick="calculateRealTime()">Calculate Real Time</button>
-            <p id="real_time_prediction"></p>
-        </article>
-    </section>
+    <section class="mt-10">
+        <div class="flex flex-col md:flex-row gap-6 justify-center items-start">
+            <article class="bg-white p-5 rounded shadow max-w-xl w-full text-center">
+                <h2 class="text-xl font-bold mb-3">"I'll be there in 5 minutes"</h2>
+                <p class="mb-3">Reken uit hoe laat je mattie <em>waarschijnlijk echt</em> komt.</p>
+                <button onclick="calculateRealTime()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md border border-green-600">
+                    Calculate Real Time
+                </button>
+                <p id="real_time_prediction" class="mt-3 font-mono text-green-700"></p>
+            </article>
 
-    <section class="functionalities mt-10">
-        <p class="mb-3">At what time did your friend say they would come?</p>
-        <div class="mb-5">
-            <label for="friend_time" class="sr-only">Friend's Time</label>
-            <input id="friend_time" type="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <article class="bg-white p-5 rounded shadow max-w-xl w-full text-center">
+                <h2 class="text-xl font-bold mb-3">Voorspel aankomsttijd</h2>
+                <p class="mb-3">Op welk tijdstip zei je vriend dat hij zou komen?</p>
+                <div class="mb-5">
+                    <input id="friend_time" type="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                </div>
+                <button onclick="predictArrival()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md border border-green-600">
+                    Predict Arrival
+                </button>
+                <p id="prediction" class="mt-3 font-mono text-green-700"></p>
+            </article>
         </div>
-        <button onclick="predictArrival()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5">Predict Arrival</button>
-
-        <p id="prediction"></p>
-
-
-
     </section>
+
+
 </main>
+<div id="player-list" class="fixed top-10 left-3 bg-gray-900 text-green-300 font-mono text-sm p-3 rounded shadow-lg w-64 z-40">
+    <p class="text-yellow-400 mb-2">Connected? Players:</p>
+    <ul class="space-y-1">
+        <li><span class="text-red-400">[AFK?!]</span> safouane <span class="ping ping-saf ml-2"></span></li>
+    </ul>
+</div>
+
+<div id="floating-toast"
+     class="animate-spin fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded shadow-lg text-lg z-50 hidden opacity-0 transition-opacity duration-300">
+</div>
 </body>
 </html>
